@@ -85,6 +85,7 @@ echo "export DOCKER_HOST='unix:///run/user/$(id -u)/docker.sock'" >>~/.bashrc
 source ~/.bashrc
 
 # sshd
+sudo apt install openssh-server
 sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
