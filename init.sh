@@ -14,7 +14,7 @@ export LANGUAGE=zh_CN:en_US
 """ >>~/.bashrc
 source ~/.bashrc
 sudo apt update
-sudo apt install apt-transport-https ca-certificates curl btop wget vim git build-essential
+sudo apt install apt-transport-https ca-certificates curl btop wget vim git build-essential cmake
 
 # openvmtools
 sudo apt install open-vm-tools
@@ -92,3 +92,29 @@ sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ss
 sudo systemctl restart sshd
 sudo systemctl status sshd
 sudo systemctl enable sshd
+
+# 开发 SDK
+curl -fsSL https://fnm.vercel.app/install | bash
+fnm install 24
+npm config set registry https://registry.npmmirror.com
+source ~/.bashrc
+
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+source ~/.bashrc
+pnpm config set registry https://registry.npmmirror.com
+
+curl -LsSf https://astral.sh/uv/install.sh | sh
+mkdir -p ~/.config/uv
+echo """
+[[tool.uv.index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+default = true
+""" >> ~/.config/uv/config.toml
+
+wget https://go.dev/dl/go1.24.4.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.4.linux-amd64.tar.gz
+echo "export PATH=\$PATH:/usr/local/go/bin:\$HOME/go/bin" >> ~/.bashrc
+source ~/.bashrc
+go env -w GO111MODULE=on
+go env -w  GOPROXY=https://goproxy.cn,direct
+go env | grep GOPROXY
