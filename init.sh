@@ -16,6 +16,15 @@ source ~/.bashrc
 sudo apt update
 sudo apt install apt-transport-https ca-certificates curl btop wget vim git build-essential cmake
 
+# sshd
+sudo apt install openssh-server
+sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sudo systemctl restart sshd
+sudo systemctl status sshd
+sudo systemctl enable sshd
+
 # openvmtools
 sudo apt install open-vm-tools
 sudo systemctl start vmtoolsd
@@ -83,15 +92,6 @@ grep "$USER" /etc/subgid
 dockerd-rootless-setuptool.sh install
 echo "export DOCKER_HOST='unix:///run/user/$(id -u)/docker.sock'" >>~/.bashrc
 source ~/.bashrc
-
-# sshd
-sudo apt install openssh-server
-sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-sudo systemctl restart sshd
-sudo systemctl status sshd
-sudo systemctl enable sshd
 
 # 开发 SDK
 curl -fsSL https://fnm.vercel.app/install | bash
