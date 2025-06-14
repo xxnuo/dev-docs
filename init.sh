@@ -45,19 +45,21 @@ sudo apt-get install github-desktop
 
 # 懒猫微服
 /bin/bash -c "$(curl -fsSL https://dl.lazycat.cloud/client/desktop/linux-install)"
+
+# hportal-client
 wget https://gitee.com/lazycatcloud/hclient-cli/releases/download/latest/hclient-cli-linux-amd64
 chmod +x hclient-cli-linux-amd64
-sudo mv hclient-cli-linux-amd64 /usr/local/bin/hclient
+sudo mv hclient-cli-linux-amd64 /home/xxnuo/.local/bin/hportal-client
 echo """
 [Unit]
-Description=hclient-cli Tunnel Service
+Description=hportal-client
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/local/bin/hclient-cli -cfg /etc/hclient-cli -tun
+ExecStart=/home/xxnuo/.local/bin/hportal-client -cfg /home/xxnuo/.config/hportal-client -tun -disable-api
 Restart=on-failure
 RestartSec=5s
 StandardOutput=journal
@@ -65,14 +67,15 @@ StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
-""" | sudo tee /etc/systemd/system/hclient.service >/dev/null
+""" | sudo tee /etc/systemd/system/hportal-client.service >/dev/null
 
+/home/xxnuo/.local/bin/hportal-client -cfg /home/xxnuo/.config/hportal-client
 curl -X POST 'http://127.0.0.1:7777/add_box?bname=wl1&uid=taurus&password=taurus'
 curl -X POST 'http://127.0.0.1:7777/add_tfa?bname=wl1&tfa=174711'
 sudo systemctl daemon-reload
-sudo systemctl start hclient-cli
-sudo systemctl status hclient-cli
-sudo systemctl enable hclient-cli
+sudo systemctl start hportal-client
+sudo systemctl status hportal-client
+sudo systemctl enable hportal-client
 
 # Add Docker's official GPG key:
 sudo apt-get update
